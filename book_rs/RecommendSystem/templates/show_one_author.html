@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block document_title %}{{ author }}{% endblock document_title %}
+
+{% block additional_styles %}
+    <style>
+        .description {
+            margin-top: 30px;
+            display: flex;
+            gap: 25px;
+            height: 80%;
+        }
+        .description__info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .description__block {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            border-radius: 5px;
+        }
+        .description__img {
+            height: 100%;
+            width: 40%;
+            display: inline-block;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+    </style>
+{% endblock additional_styles %}
+
+{% block content %}
+    {% load static %}
+
+    <h1>{{ author }}</h1>
+    <div class="description">
+        <img class="description__img" src="{% static author.image %}" alt="">
+        <div class="description__info">
+            <div class="description__annotation description__block">
+                <h2>Описание</h2>
+                <p class="common-text">{{ author.description }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

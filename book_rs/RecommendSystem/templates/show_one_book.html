@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block document_title %}{{ book.name }}{% endblock document_title %}
+
+{% block additional_styles %}
+    <style>
+        .description {
+            margin-top: 30px;
+            display: flex;
+            gap: 25px;
+        }
+        .description__info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .description__block {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            border-radius: 5px;
+        }
+        .description__img {
+            width: 100%;
+            max-width: 30%;
+            align-self: flex-start;
+            display: inline-block;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock additional_styles %}
+
+{% block content %}
+    {% load static %}
+
+    <h1>{{ book.book_name }}</h1>
+    <div class="description">
+        <img class="description__img" src="{% static book.image %}" alt="">
+        <div class="description__info">
+            <div class="description__text description__block">
+                <h2>Описание</h2>
+                <p class="common-text">Автор - <a style="text-decoration: underline;" href="{% url 'RS:show_one_author' book.author_id %}">{{ book.author }}</a></p>
+                <p class="common-text">Жанр: {{ book.genre }}</p>
+                <p class="common-text">Год написания: {{book.year}}</p>
+                <p class="common-text">Рейтинг: {{ book.rating }}</p>
+            </div>
+            <div class="button-box">
+                <button class="btn">Нравится</button>
+                <button class="btn">Не нравится</button>
+                <button class="btn">Любимое</button>
+                <button class="btn">Черный список</button>
+            </div>
+            <div class="description__annotation description__block">
+                <h2>Аннотация</h2>
+                <p class="common-text">{{ book.annotation }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block document_title %}Базовая{% endblock document_title %}</title>
+    <link rel="stylesheet" href="{% static 'styles/base.css' %}">
+    {% block additional_styles %}{% endblock additional_styles %}
+</head>
+<body>
+    <header class="header">
+        <div class="container header__container">
+            <a href="/" class="header__logo">BRS</a>
+            <nav class="header__nav">
+                <ul class="menu">
+                    <li class="menu__item">
+                        <a class="menu__link" href="{% url 'RS:show_all_books' %}">Книги</a>
+                    </li>
+                    <li class="menu__item">
+                        <a class="menu__link" href="{% url 'RS:show_all_authors' %}">Авторы</a>
+                    </li>
+                    <li class="menu__item">
+                        <a class="menu__link" href="/admin">Админка</a>
+                    </li>
+                    <li class="menu__item">
+                        <a class="menu__link" href="#">Вход</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="container main">
+        {% block content %}{% endblock content %}
+    </main>
+    <footer class="footer">
+        <div class="container footer__container">
+            <p class="common-text common-text--size_big">Переверзев Иван Дмитриевич - 221-321</p>
+        </div>
+    </footer>
+</body>
+</html>

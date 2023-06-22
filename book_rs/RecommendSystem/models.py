@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
+from os import sep
 
 # Классы моделей для базы данных
 class Genre(models.Model):
@@ -14,21 +15,26 @@ class Author(models.Model):
     firstname = models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
     patronymic = models.CharField(max_length=200)
+    image = models.ImageField(upload_to=f'images/authors/', default='images/authors/default.png')
+    description =  models.TextField(null=True)
 
     def __str__(self):
-        return f'{self.firstname} {self.lastname}'
+        return f'{self.lastname} {self.firstname} {self.patronymic}'
 
 
 class Book(models.Model):
     ''' Класс, описывающий структуру и поведение модели книги '''
     book_name = models.CharField(max_length=200)
     author = models.ForeignKey(Author, on_delete=models.PROTECT)
-    image_src = models.TextField()
+    image = models.ImageField(upload_to=f'images/book_faces/', default='images/book_faces/default.png')
     genre = models.ForeignKey(Genre, on_delete=models.PROTECT)
     year = models.IntegerField()
     rating = models.IntegerField(default=0)
-    annotation = models.TextField()
-    bibliographic_record = models.TextField()
+    annotation = models.TextField(null=True)
+
+    def get_author(self):
+        author = Author.objects.get(pk=self.author.pk)
+        return f'{author.lastname} {author.firstname}'
 
     def __str__(self):
         return f'{self.book_name}'
@@ -71,3 +77,6 @@ class FavoritesAdmin(admin.ModelAdmin):
 
 class BlackListAdmin(admin.ModelAdmin):
     list_display = ('id', 'user_id', 'book_id')
+
+
+# Классы для работы с моделями (Maganers)
