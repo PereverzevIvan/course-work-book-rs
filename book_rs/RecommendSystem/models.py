@@ -34,14 +34,14 @@ class Book(models.Model):
 
     def get_author(self):
         author = Author.objects.get(pk=self.author.pk)
-        return f'{author.lastname} {author.firstname}'
+        return f'{author.firstname} {author.lastname}'
 
     def __str__(self):
         return f'{self.book_name}'
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateField(null=True, auto_now_add=True)
@@ -61,22 +61,28 @@ class BlackList(models.Model):
 # Классы для корректного отображения моделей в админке
 class GenreAdmin(admin.ModelAdmin):
     list_display = ('id', 'genre_name')
-
+    list_filter = ('id', 'genre_name')
+    search_fields = ['genre_name']
 
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('id', 'firstname', 'lastname', 'patronymic')
+    list_filter = ('id', 'firstname', 'lastname', 'patronymic')
+    search_fields = ['firstname', 'lastname', 'patronymic']
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ('id', 'book_name', 'author', 'genre', 'year', 'rating')
+    list_filter = ('id', 'book_name', 'author', 'genre', 'year')
+    search_fields = ['book_name']
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'author_id', 'book_id', 'text', 'rating', 'created_at')
+    list_display = ('id', 'author', 'book', 'rating', 'created_at')
+    list_filter = ('id', 'author', 'book', 'created_at')
 
 class FavoritesAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'book_id')
+    list_display = ('id', 'user', 'book')
+    list_filter = ('id', 'user')
 
 class BlackListAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'book_id')
+    list_display = ('id', 'user', 'book')
+    list_filter = ('id', 'user')
 
-
-# Классы для работы с моделями (Maganers)

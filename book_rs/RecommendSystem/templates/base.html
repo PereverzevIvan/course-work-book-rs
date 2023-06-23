@@ -16,13 +16,18 @@
             <nav class="header__nav">
                 <ul class="menu">
                     <li class="menu__item">
-                        <a class="menu__link" href="{% url 'RS:show_all_books' %}">Книги</a>
+                        <a class="menu__link" href="{% url 'RS:show_all_books' 1 %}">Книги</a>
                     </li>
                     <li class="menu__item">
-                        <a class="menu__link" href="{% url 'RS:show_all_authors' %}">Авторы</a>
+                        <a class="menu__link" href="{% url 'RS:show_all_authors' 1 %}">Авторы</a>
                     </li>
                     <li class="menu__item">
                         <a class="menu__link" href="/admin">Админка</a>
+                    </li>
+                </ul>
+                <ul class="menu header__user-info">
+                    <li class="menu__item">
+                        <a class="menu__link" href="#">Регистрация</a>
                     </li>
                     <li class="menu__item">
                         <a class="menu__link" href="#">Вход</a>
@@ -31,7 +36,7 @@
             </nav>
         </div>
     </header>
-    <main class="container main">
+    <main class="container wrapper main">
         {% block content %}{% endblock content %}
     </main>
     <footer class="footer">

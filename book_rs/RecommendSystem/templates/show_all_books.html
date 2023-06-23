@@ -2,48 +2,21 @@
 {% block document_title %}Книги{% endblock document_title %}
 
 {% block additional_styles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/view_of_set.css' %}">
+
     <style>
-        .book-list {
-            margin-top: 30px;
-            list-style: none;
-            display: grid;
-            grid-template: auto / repeat(3, 1fr);
-            gap: 10px;
+        .list {
+            grid-template-columns: repeat(3, 1fr);
         }
 
-        .card {
-            display: inline-block;
-            height: 100%;
-        }
         .card a {
-            height: 100%;
-            text-decoration: none;
-            color: black;
-            padding: 10px;
-            display: flex;
-            gap: 15px;
+            flex-direction: row;
             align-items: start;
-            border-radius: 5px;
-            transition: all 0.2s;
-        }
-        .card a:hover{
-            background-color: rgba(0, 0, 0, 0.1);
-            transform: scale(1.02);
-        }
-        .card__description {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            text-align: start;
         }
         .card__img {
-            height: 100%;
             width: 30%;
-            border-radius: 5px;
-            object-fit: cover;
-        }
-        .card a:hover .card__link {
-            color: dodgerblue;
-            text-decoration: underline;
         }
     </style>
 {% endblock additional_styles %}
@@ -52,9 +25,23 @@
     {% load static %}
 
     <h1>Список всех книг</h1>
-    {% if books_list %}
-        <ul class="book-list">
-        {% for book in books_list %}
+    <hr>
+    <div class="infoblock">
+        <h2>Количество книг: {{ all_objects }}</h2>
+        <form action="{% url 'RS:search_books' 1 %}">
+            <input type="text" placeholder="Введите название книги" name="text">
+            <button class="btn">Найти</button>
+        </form>
+    </div>
+    <hr>
+    <div class="pagination">
+        <a href="{% url cur_url prev_page %}{% if cur_url == 'RS:search_books' %}?text={{ search_text }}{% endif %}" class="btn"><--</a>
+        <p>{{ page_no }} / {{ maybe_pages }}</p>
+        <a href="{% url cur_url next_page %}{% if cur_url == 'RS:search_books' %}?text={{ search_text }}{% endif %}" class="btn">--></a>
+    </div>
+    {% if objects_list %}
+        <ul class="list">
+        {% for book in objects_list %}
             <li class="card">
                 <a href="{% url 'RS:show_one_book' book.id %}">
                     <img src="{% static book.image %}" alt="{{ book.book_name }}" class="card__img">

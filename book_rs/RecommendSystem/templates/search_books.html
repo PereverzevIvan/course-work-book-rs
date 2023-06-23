@@ -1,0 +1,15 @@
+{% load static %}
+<ul class="list">
+    {% for book in objects_list %}
+        <li class="card">
+            <a href="{% url 'RS:show_one_book' book.id %}">
+                <img src="{% static book.image %}" alt="{{ book.book_name }}" class="card__img">
+                <div class="card__description">
+                <p class="common-text">{{ book.get_author }}</p>
+                <p class="common-text card__link">{{ book.book_name }}</p>
+                <p class="common-text">Рейтинг: {{ book.rating }}</p>
+            </div>
+            </a>
+        </li>
+    {% endfor %}
+</ul>

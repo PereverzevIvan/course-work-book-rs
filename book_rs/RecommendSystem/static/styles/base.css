@@ -23,6 +23,11 @@ a:hover {
     margin: 0 auto;
 }
 
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -55,6 +60,21 @@ body {
     color: white;
     font-size: 1.5rem;
     text-decoration: none;
+    font-weight: bold;
+}
+.header__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+.header__user-info {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    padding: 2px 5px;
+}
+.header__user-info a:hover {
+    background-color: transparent;
 }
 
 .menu {
@@ -78,7 +98,7 @@ body {
 }
 .header__logo:hover, .menu__link:hover {
     color: yellow;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.3);
     transform: scale(1.05)
 }
 
@@ -103,10 +123,19 @@ body {
     color: white;
     font-size: 1.1rem;
     transition: all 0.2s;
+    display: inline-block;
+    width: fit-content;
 }
 .btn:hover {
     transform: scale(1.03);
     color: yellow;
+}
+
+/* Input fields */
+input[type='text'] {
+    padding: 5px;
+    border-radius: 5px;
+    min-width: 250px;
 }
 
 /* Footer */

@@ -1,2 +1,10 @@
-<h1>Страница не найдена!</h1>
 {{ exception }}
+
+{% extends "base.html" %}
+{% block document_title %}Ошибка 404{% endblock document_title %}
+{% block content %}
+    <div class="text" style="text-align: center;">
+        <h1>Ошибка 404</h1>
+        <p>Запрашиваемая вами страница не существует.</p>
+    </div>
+{% endblock content %}
