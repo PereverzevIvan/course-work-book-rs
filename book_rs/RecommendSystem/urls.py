@@ -10,10 +10,11 @@ urlpatterns = [
     path('one_author/<int:author_id>/', views.show_one_author, name='show_one_author'),
     path('serach_books/<int:page_no>/', views.search_books, name='search_books'),
     path('serach_authors/<int:page_no>/', views.search_authors, name='search_authors'),
-    path('favorite/<int:user_id>', views.show_favorites_of_user, name="favorite"),
-    path('add_comment/<int:book_id>', views.add_comment, name='add_comment'),
-    path('delete_comment/<int:comment_id>', views.delete_comment, name='delete_comment'),
-    
+    path('favorite/<int:page_no>/', views.show_favorites_of_user, name="favorite"),
+    path('add_favorite/<int:book_id>/', views.add_favorite, name="add_favorite"),
+    path('delete_favorite/<int:book_id>/', views.delete_favorite, name="delete_favorite"),
+    path('add_comment/<int:book_id>/', views.add_comment, name='add_comment'),
+    path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
 ]
 
 handler404 = 'RecommendSystem.views.error_404'

@@ -108,7 +108,11 @@
             <div class="button-box">
                 <button class="btn">Нравится</button>
                 <button class="btn">Не нравится</button>
-                <button class="btn">Любимое</button>
+                {% if not is_favorite %}
+                    <a href="{% url 'RS:add_favorite' book.id %}" class="btn">Добавить в любимое</a>
+                {% else %}
+                    <a href="{% url 'RS:delete_favorite' book.id %}" class="btn">Удалить из любимого</a>
+                {% endif %}
                 <button class="btn">Черный список</button>
             </div>
             <div class="description__annotation description__block">

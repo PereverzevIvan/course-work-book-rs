@@ -52,6 +52,12 @@ class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
+    def get_book(self):
+        return Book.objects.get(pk=self.book.id)
+
+    def __str__(self):
+        return f'User: {self.user}\nBook: {self.book}'
+
 
 class BlackList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -35,23 +35,22 @@ def show_all_books(request, page_no=1):
     books_list = list(Book.objects.all())
     context = get_context_for_pagination(books_list, page_no, 12)
     context['cur_url'] = 'RS:show_all_books'
+    context['h1_title'] = 'Список всех книг'
 
     return render(request, 'show_all_books.html', context)
 
 
 def show_one_book(request, book_id: int):
     ''' Просмотр профиля отдельной книги '''
+    user = request.user
     book = get_object_or_404(Book, pk=book_id)
     comments = Comment.objects.filter(book_id=book.id)
+    is_favorite = False
 
-    return render(request, "show_one_book.html", {"book": book, 'comments': comments})
+    if user.is_authenticated:
+        is_favorite = bool(Favorite.objects.filter(user_id=user.id, book_id=book_id))
 
-
-def user_profile(request, user_id: int):
-    ''' Просмотр профиля авторизованного пользователя '''
-    user = get_object_or_404(User, pk=user_id)
-
-    return render(request, "user_profile.html", {"user": user})
+    return render(request, "show_one_book.html", {"book": book, 'comments': comments, 'is_favorite': is_favorite})
 
 def show_all_authors(request, page_no=1):
     ''' Просмотр всех авторов, имеющихся в БД '''
@@ -74,6 +73,7 @@ def search_books(request, page_no: int):
     context = get_context_for_pagination(books, page_no, 15)
     context['cur_url'] = 'RS:search_books'
     context['search_text'] = text
+    context['h1_title'] = 'Книги по запросу'
 
     return render(request, 'show_all_books.html', context)
 
@@ -88,19 +88,44 @@ def search_authors(request, page_no: int):
     return render(request, 'show_all_authors.html', context)
 
 
-def show_favorites_of_user(request, user_id:int):
+def show_favorites_of_user(request, page_no:int):
     user = request.user
     if user.is_authenticated:
-        if user.id != user_id:
-            return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
-                                                  'error_text': 'Вы не можете получить доступ к этому ресурсу'})
+        favotites = list(Favorite.objects.filter(user_id=user.id))
+        books_list = [record.get_book() for record in favotites]
+        context = get_context_for_pagination(books_list, page_no, 9)
+        context['cur_url'] = 'RS:favorite'
+        context['h1_title'] = 'Ваше любимое'
         
-        books_id = list(Favorite.objects.filter(user_id=user_id))
-        return HttpResponse(books_id)
+        return render(request, 'show_all_books.html', context)
     else:
         return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
-                                                  'error_text': 'Вы не можете получить доступ к этому ресурсу'})
+                                                  'error_text': 'Вы не можете получить доступ к этому ресурсу так как не прошли авторизацию'})
+    
 
+def add_favorite(request, book_id:int):
+    user = request.user
+    if user.is_authenticated and get_object_or_404(Book, pk=book_id):
+        new_record = Favorite()
+        new_record.user_id = user.id
+        new_record.book_id = book_id
+        new_record.save()
+        return HttpResponsePermanentRedirect(reverse('RS:favorite', kwargs={'page_no': 1}))
+    else:
+        return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
+                                                  'error_text': 'Вы не можете получить доступ к этому ресурсу так как не прошли авторизацию'})
+
+
+def delete_favorite(request, book_id:int):
+    user = request.user
+    favorite = get_object_or_404(Favorite, user_id=user.id, book_id=book_id)
+
+    if user.is_authenticated:
+        favorite.delete()
+        return HttpResponsePermanentRedirect(reverse('RS:favorite', kwargs={'page_no': 1}))
+    else:
+        return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
+                                                  'error_text': 'Вы не можете получить доступ к этому ресурсу так как не прошли авторизацию'})
 
 def add_comment(request, book_id:int):
     if request.method == 'POST':
