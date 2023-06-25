@@ -13,6 +13,9 @@ urlpatterns = [
     path('favorite/<int:page_no>/', views.show_favorites_of_user, name="favorite"),
     path('add_favorite/<int:book_id>/', views.add_favorite, name="add_favorite"),
     path('delete_favorite/<int:book_id>/', views.delete_favorite, name="delete_favorite"),
+    path('black_list/<int:page_no>/', views.show_black_list, name="black_list"),
+    path('add_black_list/<int:book_id>/', views.add_black_list, name="add_black_list"),
+    path('delete_black_list/<int:book_id>/', views.delete_black_list, name="delete_black_list"),
     path('add_comment/<int:book_id>/', views.add_comment, name='add_comment'),
     path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
 ]

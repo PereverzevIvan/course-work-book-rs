@@ -32,7 +32,11 @@ def index(request):
     
 def show_all_books(request, page_no=1):
     ''' Просмтор всех имеющихся в БД книг '''
+    user = request.user
+
     books_list = list(Book.objects.all())
+    if user.is_authenticated:
+        books_list = [book for book in books_list if not book.in_black_list(user.id)]
     context = get_context_for_pagination(books_list, page_no, 12)
     context['cur_url'] = 'RS:show_all_books'
     context['h1_title'] = 'Список всех книг'
@@ -46,11 +50,20 @@ def show_one_book(request, book_id: int):
     book = get_object_or_404(Book, pk=book_id)
     comments = Comment.objects.filter(book_id=book.id)
     is_favorite = False
+    in_black_list = False
 
     if user.is_authenticated:
-        is_favorite = bool(Favorite.objects.filter(user_id=user.id, book_id=book_id))
+        is_favorite = book.in_favorite(user.id)
+        in_black_list = book.in_black_list(user.id)
+    
+    context = {
+        "book": book, 
+        'comments': comments, 
+        'is_favorite': is_favorite,
+        'in_black_list': in_black_list
+        }
 
-    return render(request, "show_one_book.html", {"book": book, 'comments': comments, 'is_favorite': is_favorite})
+    return render(request, "show_one_book.html", context)
 
 def show_all_authors(request, page_no=1):
     ''' Просмотр всех авторов, имеющихся в БД '''
@@ -123,6 +136,45 @@ def delete_favorite(request, book_id:int):
     if user.is_authenticated:
         favorite.delete()
         return HttpResponsePermanentRedirect(reverse('RS:favorite', kwargs={'page_no': 1}))
+    else:
+        return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
+                                                  'error_text': 'Вы не можете получить доступ к этому ресурсу так как не прошли авторизацию'})
+
+def show_black_list(request, page_no:int):
+    user = request.user
+    if user.is_authenticated:
+        records = list(BlackList.objects.filter(user_id=user.id))
+        books_list = [record.get_book() for record in records]
+        context = get_context_for_pagination(books_list, page_no, 9)
+        context['cur_url'] = 'RS:black_list'
+        context['h1_title'] = 'Ваш черный список'
+        
+        return render(request, 'show_all_books.html', context)
+    else:
+        return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
+                                                  'error_text': 'Вы не можете получить доступ к этому ресурсу так как не прошли авторизацию'})
+    
+
+def add_black_list(request, book_id:int):
+    user = request.user
+    if user.is_authenticated and get_object_or_404(Book, pk=book_id):
+        new_record = BlackList()
+        new_record.user_id = user.id
+        new_record.book_id = book_id
+        new_record.save()
+        return HttpResponsePermanentRedirect(reverse('RS:black_list', kwargs={'page_no': 1}))
+    else:
+        return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
+                                                  'error_text': 'Вы не можете получить доступ к этому ресурсу так как не прошли авторизацию'})
+
+
+def delete_black_list(request, book_id:int):
+    user = request.user
+    record = get_object_or_404(BlackList, user_id=user.id, book_id=book_id)
+
+    if user.is_authenticated:
+        record.delete()
+        return HttpResponsePermanentRedirect(reverse('RS:black_list', kwargs={'page_no': 1}))
     else:
         return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
                                                   'error_text': 'Вы не можете получить доступ к этому ресурсу так как не прошли авторизацию'})

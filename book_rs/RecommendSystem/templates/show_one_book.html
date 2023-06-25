@@ -113,7 +113,11 @@
                 {% else %}
                     <a href="{% url 'RS:delete_favorite' book.id %}" class="btn">Удалить из любимого</a>
                 {% endif %}
-                <button class="btn">Черный список</button>
+                {% if not in_black_list %}
+                    <a href="{% url 'RS:add_black_list' book.id %}" class="btn">Добавить в черный список</a>
+                {% else %}
+                    <a href="{% url 'RS:delete_black_list' book.id %}" class="btn">Удалить из черного списка</a>
+                {% endif %}
             </div>
             <div class="description__annotation description__block">
                 <h2>Аннотация</h2>

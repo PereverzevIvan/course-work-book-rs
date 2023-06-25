@@ -35,6 +35,12 @@ class Book(models.Model):
     def get_author(self):
         author = Author.objects.get(pk=self.author.pk)
         return f'{author.firstname} {author.lastname}'
+    
+    def in_black_list(self, user_id:int):
+        return bool(BlackList.objects.filter(user_id=user_id, book_id=self.id))
+    
+    def in_favorite(self, user_id:int):
+        return bool(Favorite.objects.filter(user_id=user_id, book_id=self.id))
 
     def __str__(self):
         return f'{self.book_name}'
@@ -62,6 +68,12 @@ class Favorite(models.Model):
 class BlackList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+    def get_book(self):
+        return Book.objects.get(pk=self.book.id)
+
+    def __str__(self):
+        return f'User: {self.user}\nBook: {self.book}'
 
 
 # Классы для корректного отображения моделей в админке
