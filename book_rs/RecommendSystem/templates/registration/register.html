@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block document_title %}Регистрация{% endblock document_title %}
+{% block additional_styles %}
+<style>
+    .form {
+        width: 600px;
+        border: 1px solid black;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+        margin: 30px auto 0;
+    }
+    
+    input {
+        font-size: 1.1rem;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    ul {
+        list-style: none;
+    }
+    .errorlist li {
+        border-radius: 5px;
+        background-color: lightcoral;
+        border: 1px solid crimson;
+        padding: 5px;
+    }
+</style>
+{% endblock additional_styles %}
+
+
+{% block content %}
+    <h1>Авторизация</h1>
+    <hr>
+    <form action="{% url 'users:register' %}" method="post" class="form">
+        {% csrf_token %}
+        {% if form.errors %}
+            {{ form.errors }}
+        {% endif %}
+        <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+        {{ form.username }}
+        <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+        {{ form.password1 }}
+        <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+        {{ form.password2 }}
+        <button style="align-self: flex-end;" class="btn" type="submit">Отправить</button>
+    </form>
+{% endblock content %}

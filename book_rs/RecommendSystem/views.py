@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from django.shortcuts import HttpResponse, get_object_or_404
+from django.shortcuts import HttpResponse, get_object_or_404, HttpResponsePermanentRedirect
 from .models import *
 from math import ceil
+from django.contrib import auth
+from django.urls import reverse
 
 # Вспомогательные функции
 def get_context_for_pagination(arr: list, page_no: int, cards_count: int):
@@ -31,7 +33,7 @@ def index(request):
 def show_all_books(request, page_no=1):
     ''' Просмтор всех имеющихся в БД книг '''
     books_list = list(Book.objects.all())
-    context = get_context_for_pagination(books_list, page_no, 15)
+    context = get_context_for_pagination(books_list, page_no, 12)
     context['cur_url'] = 'RS:show_all_books'
 
     return render(request, 'show_all_books.html', context)
@@ -40,8 +42,9 @@ def show_all_books(request, page_no=1):
 def show_one_book(request, book_id: int):
     ''' Просмотр профиля отдельной книги '''
     book = get_object_or_404(Book, pk=book_id)
+    comments = Comment.objects.filter(book_id=book.id)
 
-    return render(request, "show_one_book.html", {"book": book})
+    return render(request, "show_one_book.html", {"book": book, 'comments': comments})
 
 
 def user_profile(request, user_id: int):
@@ -84,12 +87,48 @@ def search_authors(request, page_no: int):
 
     return render(request, 'show_all_authors.html', context)
 
-def registration():
-    pass
+
+def show_favorites_of_user(request, user_id:int):
+    user = request.user
+    if user.is_authenticated:
+        if user.id != user_id:
+            return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
+                                                  'error_text': 'Вы не можете получить доступ к этому ресурсу'})
+        
+        books_id = list(Favorite.objects.filter(user_id=user_id))
+        return HttpResponse(books_id)
+    else:
+        return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
+                                                  'error_text': 'Вы не можете получить доступ к этому ресурсу'})
 
 
-def authorization():
-    pass
+def add_comment(request, book_id:int):
+    if request.method == 'POST':
+        user = request.user
+        if user.is_authenticated and get_object_or_404(Book, pk=book_id):
+            comment = Comment()
+            comment.book_id = book_id
+            comment.author_id = user.id
+            comment.text = request.POST.get('comment-text')
+            comment.save()
+            return HttpResponsePermanentRedirect(reverse('RS:show_one_book', kwargs={'book_id': book_id}))
+        else:
+            return render(request, 'error.html', {'error_title': 'Ошибка добавления', 
+                                                  'error_text': 'Не удалось добавить комментарий'})
+    
+
+def delete_comment(request, comment_id:int):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    book_id = comment.book_id
+    user = request.user
+
+    if user.is_authenticated and comment.author_id == user.id:
+        comment.delete()
+        return HttpResponsePermanentRedirect(reverse('RS:show_one_book', kwargs={'book_id': book_id}))
+    return render(request, 'error.html', {'error_title': 'Ошибка удаления', 
+                                                  'error_text': 'Вы не можете удалить комментарий другого человека'})
+
+
 
 def error_404(request, exception):
     data = {

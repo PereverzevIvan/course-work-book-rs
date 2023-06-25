@@ -26,6 +26,67 @@
             display: inline-block;
             border-radius: 5px;
         }
+
+        .vertical-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+        }
+
+        .comment-container {
+            gap: 10px;
+            width: 80%;
+            align-self: center;
+            margin-top: 50px;
+
+        }
+
+        .comment {
+            padding: 10px;
+            gap: 10px;
+            border-radius: 5px;
+            border: 1px solid black;
+        }
+        .comment__author {
+            font-weight: bold;
+        }
+
+        .form {
+            max-width: 100%;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .form-block--hidden {
+            animation: form-hide 0.3s forwards;
+        }
+        .form-block--active {
+            animation: form-show 0.3s;
+        }
+
+        @keyframes form-hide {
+            from {
+                opacity: 1;
+                height: 100%;
+            }
+            to {
+                opacity: 0;
+                height: 0%;
+            }
+        }
+
+        @keyframes form-show {
+            from {
+                opacity: 0;
+                height: 0%;
+            }
+            to {
+                opacity: 1;
+                height: 100%;
+            }
+        }
+        
     </style>
 {% endblock additional_styles %}
 
@@ -33,6 +94,7 @@
     {% load static %}
 
     <h1>{{ book.book_name }}</h1>
+    <hr>
     <div class="description">
         <img class="description__img" src="{% static book.image %}" alt="">
         <div class="description__info">
@@ -55,4 +117,52 @@
             </div>
         </div>
     </div>
+    <div class="comment-container wrapper">
+        <div class="vertical-wrapper">
+            <h2>Комментарии</h2>
+            {% if user.is_authenticated %}
+            <button class="btn" id="open-form">Оставить отзыв</button>
+            {% endif %}
+        </div>
+        <hr>
+        {% if user.is_authenticated %}
+        <div class="form-block form-block--hidden">
+            <form action="{% url 'RS:add_comment' book.id %}" class="form" method="post" style="margin-top: 0;">
+                {% csrf_token %}
+                <label class="common-text" for="comment-text">Введите текст</label>
+                <textarea name="comment-text" id="comment-text" cols="30" rows="10"></textarea>
+                <button class="btn" type="submit" style="align-self: flex-end;">Отправить</button>
+            </form>
+            <hr>
+        </div>
+        {% endif %}
+        {% if comments %}
+            {% for comment in comments%}
+                <div class="comment wrapper" id="comment-{{comment.id}}">
+                    <p class="common-text comment__author">{{ comment.author }}</p>
+                    <p class="common-text comment__text">{{ comment.text }}</p>
+                    <div class="vertical-wrapper" style="border-top: 1px solid black; margin-top: 15px;">
+                        {% if user.is_authenticated and user.id == comment.author_id %}
+                            <div class="button-box">
+                                <a href="{% url 'RS:delete_comment' comment.id %}" class="btn">Удалить</a>
+                            </div>
+                        {% endif %}
+                        <p class="comment_date">{{ comment.created_at }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="common-text" style="text-align: center;">Комментарии к данной книге отсутствуют. Станьте первым!</p>
+        {% endif %}
+    </div>
+
+    <script>
+        formBlock = document.querySelector('.form-block')
+        openFormBtn = document.getElementById('open-form')
+
+        openFormBtn.addEventListener('click', () => {
+            formBlock.classList.toggle('form-block--hidden')
+            formBlock.classList.toggle('form-block--active')
+        })
+    </script>
 {% endblock content %}

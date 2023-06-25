@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block document_title %}Авторизация{% endblock document_title %}
+{% block additional_styles %}
+<style>
+    ul {
+        list-style: none;
+    }
+    .errorlist li {
+        border-radius: 5px;
+        background-color: lightcoral;
+        border: 1px solid crimson;
+        padding: 5px;
+    }
+</style>
+{% endblock additional_styles %}
+
+
+{% block content %}
+    <h1>Авторизация</h1>
+    <hr>
+    <form action="{% url 'users:login' %}" method="post" class="form">
+        {% csrf_token %}
+        {{ form }}
+        <button style="align-self: flex-end;" class="btn" type="submit">Отправить</button>
+    </form>
+{% endblock content %}

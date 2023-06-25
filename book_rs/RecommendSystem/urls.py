@@ -1,18 +1,19 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 app_name = 'RS'
 urlpatterns = [
     path("", views.index, name="index"),
-    path('user/<int:user_id>/', views.user_profile, name='check_user_profile'),
     path('all_books/<int:page_no>/', views.show_all_books, name='show_all_books'),
     path('one_book/<int:book_id>/', views.show_one_book, name='show_one_book'),
-    path('registration/', views.registration, name='registration'),
-    path('authorization/', views.authorization, name='authorization'),
     path('all_authors/<int:page_no>/', views.show_all_authors, name='show_all_authors'),
     path('one_author/<int:author_id>/', views.show_one_author, name='show_one_author'),
     path('serach_books/<int:page_no>/', views.search_books, name='search_books'),
-    path('serach_authors/<int:page_no>/', views.search_authors, name='search_authors')
+    path('serach_authors/<int:page_no>/', views.search_authors, name='search_authors'),
+    path('favorite/<int:user_id>', views.show_favorites_of_user, name="favorite"),
+    path('add_comment/<int:book_id>', views.add_comment, name='add_comment'),
+    path('delete_comment/<int:comment_id>', views.delete_comment, name='delete_comment'),
+    
 ]
 
 handler404 = 'RecommendSystem.views.error_404'
