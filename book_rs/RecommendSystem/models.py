@@ -24,13 +24,13 @@ class Author(models.Model):
 
 class Book(models.Model):
     ''' Класс, описывающий структуру и поведение модели книги '''
-    book_name = models.CharField(max_length=200)
-    author = models.ForeignKey(Author, on_delete=models.PROTECT)
-    image = models.ImageField(upload_to=f'images/book_faces/', default='images/book_faces/default.png')
-    genre = models.ForeignKey(Genre, on_delete=models.PROTECT)
-    year = models.IntegerField()
-    rating = models.IntegerField(default=0)
-    annotation = models.TextField(null=True)
+    book_name = models.CharField(max_length=200, verbose_name='Название')
+    author = models.ForeignKey(Author, on_delete=models.PROTECT, verbose_name='Автор')
+    image = models.ImageField(upload_to=f'images/book_faces/', default='images/book_faces/default.png', verbose_name='Изображение обложки')
+    genre = models.ForeignKey(Genre, on_delete=models.PROTECT, verbose_name='Жанр')
+    year = models.IntegerField(verbose_name='Год издания')
+    rating = models.IntegerField(default=0, verbose_name='Рейтинг')
+    annotation = models.TextField(null=True, verbose_name='Описание')
 
     def get_author(self):
         author = Author.objects.get(pk=self.author.pk)
@@ -41,6 +41,12 @@ class Book(models.Model):
     
     def in_favorite(self, user_id:int):
         return bool(Favorite.objects.filter(user_id=user_id, book_id=self.id))
+    
+    def was_liked(self, user_id):
+        return bool(Like.objects.filter(user_id=user_id, book_id=self.id))
+    
+    def was_disliked(self, user_id):
+        return bool(Dislike.objects.filter(user_id=user_id, book_id=self.id))
 
     def __str__(self):
         return f'{self.book_name}'
@@ -75,6 +81,16 @@ class BlackList(models.Model):
         return f'User: {self.user}\nBook: {self.book}'
 
 
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+
+class Dislike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+
 # Классы для корректного отображения моделей в админке
 class GenreAdmin(admin.ModelAdmin):
     list_display = ('id', 'genre_name')
@@ -103,3 +119,10 @@ class BlackListAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'book')
     list_filter = ('id', 'user')
 
+class LikeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'book')
+    list_filter = ('id', 'user')
+
+class DislikeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'book')
+    list_filter = ('id', 'user')

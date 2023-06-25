@@ -27,6 +27,13 @@
             border-radius: 5px;
         }
 
+        .button-box {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 5px;
+        }
+
         .vertical-wrapper {
             display: flex;
             justify-content: space-between;
@@ -106,9 +113,21 @@
                 <p class="common-text">Рейтинг: {{ book.rating }}</p>
             </div>
             <div class="button-box">
-                <button class="btn">Нравится</button>
-                <button class="btn">Не нравится</button>
                 {% if user.is_authenticated %}
+                    {% if not is_disliked %}
+                        {% if not is_liked %}
+                            <a href="{% url 'RS:like' book.id %}" class="btn">Поставить лайк</a>
+                        {% else %}
+                            <a href="{% url 'RS:like' book.id %}" class="btn">Убрать лайк</a>
+                        {% endif %}
+                    {% endif %}
+                    {% if not is_liked %}
+                        {% if not is_disliked %}
+                            <a href="{% url 'RS:dislike' book.id %}" class="btn">Поставить дизлайк</a>
+                        {% else %}
+                            <a href="{% url 'RS:dislike' book.id %}" class="btn">Убрать дизлайк</a>
+                        {% endif %}
+                    {% endif %}
                     {% if not in_black_list %}
                         {% if not is_favorite %}
                             <a href="{% url 'RS:add_favorite' book.id %}" class="btn">Добавить в любимое</a>

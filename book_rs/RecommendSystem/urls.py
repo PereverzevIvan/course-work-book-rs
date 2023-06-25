@@ -19,6 +19,8 @@ urlpatterns = [
     path('add_comment/<int:book_id>/', views.add_comment, name='add_comment'),
     path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
     path('books_of_author/<int:author_id>/<int:page_no>', views.show_author_books, name='books_of_author'),
+    path('like/<int:book_id>/', views.add_like, name='like'),
+    path('dislike/<int:book_id>/', views.add_dislike, name='dislike'),
 ]
 
 handler404 = 'RecommendSystem.views.error_404'

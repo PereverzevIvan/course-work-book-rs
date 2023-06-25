@@ -51,16 +51,22 @@ def show_one_book(request, book_id: int):
     comments = Comment.objects.filter(book_id=book.id)
     is_favorite = False
     in_black_list = False
+    is_liked = False
+    is_disliked = False
 
     if user.is_authenticated:
         is_favorite = book.in_favorite(user.id)
         in_black_list = book.in_black_list(user.id)
+        is_liked = book.was_liked(user.id)
+        is_disliked = book.was_disliked(user.id)
     
     context = {
         "book": book, 
         'comments': comments, 
         'is_favorite': is_favorite,
-        'in_black_list': in_black_list
+        'in_black_list': in_black_list,
+        'is_liked': is_liked,
+        'is_disliked': is_disliked
         }
 
     return render(request, "show_one_book.html", context)
@@ -159,7 +165,6 @@ def show_black_list(request, page_no:int):
     
 
 def add_black_list(request, book_id:int):
-    print('Это функция добавления в ЧС')
     user = request.user
     book = get_object_or_404(Book, pk=book_id)
     if user.is_authenticated and book:
@@ -225,6 +230,55 @@ def show_author_books(request, author_id, page_no):
     context['author_id'] = author_id
 
     return render(request, 'show_all_books.html', context)
+
+def add_like(request, book_id):
+    user = request.user
+    book = get_object_or_404(Book, id=book_id)
+
+    if user.is_authenticated:
+        like = Like.objects.filter(user_id=user.id, book_id=book_id)
+        if not bool(like):
+            book.rating += 1
+            book.save()
+            
+            new_like = Like()
+            new_like.user_id = user.id
+            new_like.book_id = book_id
+            new_like.save()
+        else:
+            book.rating -= 1
+            book.save()
+
+            like.delete()
+        return HttpResponsePermanentRedirect(reverse('RS:show_one_book', kwargs={'book_id': book_id}))
+    else:
+        return render(request, 'error.html', {'error_title': 'Ошибка удаления', 
+                                                  'error_text': 'Вы не можете удалить комментарий другого человека'})
+    
+
+def add_dislike(request, book_id):
+    user = request.user
+    book = get_object_or_404(Book, id=book_id)
+
+    if user.is_authenticated:
+        dislike = Dislike.objects.filter(user_id=user.id, book_id=book_id)
+        if not bool(dislike):
+            book.rating -= 1
+            book.save()
+            
+            new_dislike = Dislike()
+            new_dislike.user_id = user.id
+            new_dislike.book_id = book_id
+            new_dislike.save()
+        else:
+            book.rating += 1
+            book.save()
+
+            dislike.delete()
+        return HttpResponsePermanentRedirect(reverse('RS:show_one_book', kwargs={'book_id': book_id}))
+    else:
+        return render(request, 'error.html', {'error_title': 'Ошибка удаления', 
+                                                  'error_text': 'Вы не можете удалить комментарий другого человека'})
 
 
 def error_404(request, exception):
