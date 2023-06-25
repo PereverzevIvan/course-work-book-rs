@@ -118,11 +118,14 @@ def show_favorites_of_user(request, page_no:int):
 
 def add_favorite(request, book_id:int):
     user = request.user
-    if user.is_authenticated and get_object_or_404(Book, pk=book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    if user.is_authenticated and book:
         new_record = Favorite()
         new_record.user_id = user.id
         new_record.book_id = book_id
         new_record.save()
+        if book.in_black_list(user.id):
+            HttpResponsePermanentRedirect(reverse('RS:delete_black_list', kwargs={'book_id': book.id}))            
         return HttpResponsePermanentRedirect(reverse('RS:favorite', kwargs={'page_no': 1}))
     else:
         return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
@@ -156,12 +159,16 @@ def show_black_list(request, page_no:int):
     
 
 def add_black_list(request, book_id:int):
+    print('Это функция добавления в ЧС')
     user = request.user
-    if user.is_authenticated and get_object_or_404(Book, pk=book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    if user.is_authenticated and book:
         new_record = BlackList()
         new_record.user_id = user.id
         new_record.book_id = book_id
         new_record.save()
+        if book.in_favorite(user.id):
+            HttpResponsePermanentRedirect(reverse('RS:delete_favorite', kwargs={'book_id': book.id})) 
         return HttpResponsePermanentRedirect(reverse('RS:black_list', kwargs={'page_no': 1}))
     else:
         return render(request, 'error.html', {'error_title': 'Ошибка доступа', 
@@ -205,6 +212,19 @@ def delete_comment(request, comment_id:int):
     return render(request, 'error.html', {'error_title': 'Ошибка удаления', 
                                                   'error_text': 'Вы не можете удалить комментарий другого человека'})
 
+def show_author_books(request, author_id, page_no):
+    user = request.user
+    author = get_object_or_404(Author, pk=author_id)
+    books_list = Book.objects.filter(author_id=author_id)
+
+    if user.is_authenticated:
+        books_list = [book for book in books_list if not book.in_black_list(user.id)]
+    context = get_context_for_pagination(books_list, page_no, 3)
+    context['cur_url'] = 'RS:books_of_author'
+    context['h1_title'] = f'{author} - книги'
+    context['author_id'] = author_id
+
+    return render(request, 'show_all_books.html', context)
 
 
 def error_404(request, exception):

@@ -108,15 +108,21 @@
             <div class="button-box">
                 <button class="btn">Нравится</button>
                 <button class="btn">Не нравится</button>
-                {% if not is_favorite %}
-                    <a href="{% url 'RS:add_favorite' book.id %}" class="btn">Добавить в любимое</a>
-                {% else %}
-                    <a href="{% url 'RS:delete_favorite' book.id %}" class="btn">Удалить из любимого</a>
-                {% endif %}
-                {% if not in_black_list %}
-                    <a href="{% url 'RS:add_black_list' book.id %}" class="btn">Добавить в черный список</a>
-                {% else %}
-                    <a href="{% url 'RS:delete_black_list' book.id %}" class="btn">Удалить из черного списка</a>
+                {% if user.is_authenticated %}
+                    {% if not in_black_list %}
+                        {% if not is_favorite %}
+                            <a href="{% url 'RS:add_favorite' book.id %}" class="btn">Добавить в любимое</a>
+                        {% else %}
+                            <a href="{% url 'RS:delete_favorite' book.id %}" class="btn">Удалить из любимого</a>
+                        {% endif %}
+                    {% endif %}
+                        {% if not is_favorite %}
+                        {% if not in_black_list %}
+                            <a href="{% url 'RS:add_black_list' book.id %}" class="btn">Добавить в черный список</a>
+                        {% else %}
+                            <a href="{% url 'RS:delete_black_list' book.id %}" class="btn">Удалить из черного списка</a>
+                        {% endif %}
+                    {% endif %}
                 {% endif %}
             </div>
             <div class="description__annotation description__block">

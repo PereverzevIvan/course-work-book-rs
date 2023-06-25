@@ -51,7 +51,6 @@ class Comment(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateField(null=True, auto_now_add=True)
-    rating = models.IntegerField(default=0)
 
 
 class Favorite(models.Model):
@@ -93,7 +92,7 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ['book_name']
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'author', 'book', 'rating', 'created_at')
+    list_display = ('id', 'author', 'book', 'created_at')
     list_filter = ('id', 'author', 'book', 'created_at')
 
 class FavoritesAdmin(admin.ModelAdmin):

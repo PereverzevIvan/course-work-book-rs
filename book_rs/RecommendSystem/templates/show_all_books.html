@@ -35,9 +35,21 @@
     </div>
     <hr>
     <div class="pagination">
-        <a href="{% url cur_url prev_page %}{% if cur_url == 'RS:search_books' %}?text={{ search_text }}{% endif %}" class="btn"><--</a>
+        <a href="
+            {% if cur_url == 'RS:books_of_author' %}
+                {% url cur_url author_id prev_page %}
+            {% else %}
+                {% url cur_url prev_page %}{% endif %}{% if cur_url == 'RS:search_books' %}?text={{ search_text }}{% endif %}" class="btn">
+            Назад
+        </a>
         <p>{{ page_no }} / {{ maybe_pages }}</p>
-        <a href="{% url cur_url next_page %}{% if cur_url == 'RS:search_books' %}?text={{ search_text }}{% endif %}" class="btn">--></a>
+        <a href="
+            {% if cur_url == 'RS:books_of_author' %}
+                {% url cur_url author_id next_page %}
+            {% else %}
+                {% url cur_url next_page %}{% endif %}{% if cur_url == 'RS:search_books' %}?text={{ search_text }}{% endif %}" class="btn">
+            Назад
+        </a>
     </div>
     {% if objects_list %}
         <ul class="list">
