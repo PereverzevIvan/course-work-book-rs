@@ -14,7 +14,7 @@
     <div class="infoblock">
         <h2>Количество авторов: {{ all_objects }}</h2>
         <form action="{% url 'RS:search_authors' 1 %}">
-            <input type="text" placeholder="Введите название книги" name="text">
+            <input type="text" placeholder="Введите ФИО автора" name="text">
             <button class="btn">Найти</button>
         </form>
     </div>
