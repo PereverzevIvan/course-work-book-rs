@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = 'RecommendSystem/static/'
 
 MEDIA_ROOT = BASE_DIR / MEDIA_URL
+
+# Настройки rest фреймворка
+REST_FRAMEWORK = {
+    # Настройка пагинации
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 3,
+    # Настройка вильтров
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}

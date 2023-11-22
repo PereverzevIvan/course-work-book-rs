@@ -1,5 +1,18 @@
 from django.urls import path, include
-from . import views
+from rest_framework import routers
+from . import views, api_views
+
+# В данном случае router нужен для того, чтобы автоматизировать процесс
+# создания маршрутов для вызова методов зарегистрированных представлений.
+# 
+# Например, при использовании класса DefaultRouter роутер создает
+# три группы маршрутов для каждого зарегистрированного представления:
+#   1) api/v1/<прейикс> - для получения списка записей и добавления новой
+#   2) api/v1/<префикс>/pk - для получения/удаления/изменения конкретной записи
+#   3) api/v1/ - для получения всех имеющихся в роутере маршрутов
+
+router = routers.DefaultRouter()
+router.register(r'books', api_views.BooksViewSet)
 
 app_name = 'RS'
 urlpatterns = [
@@ -21,6 +34,7 @@ urlpatterns = [
     path('books_of_author/<int:author_id>/<int:page_no>', views.show_author_books, name='books_of_author'),
     path('like/<int:book_id>/', views.add_like, name='like'),
     path('dislike/<int:book_id>/', views.add_dislike, name='dislike'),
+    path('api/v1/', include(router.urls ))
 ]
 
 handler404 = 'RecommendSystem.views.error_404'

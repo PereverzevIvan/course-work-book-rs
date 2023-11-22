@@ -39,7 +39,7 @@ class Book(models.Model):
     image = models.ImageField(upload_to=f'images/book_faces/', default='images/book_faces/default.png', verbose_name='Изображение обложки')
     genre = models.ForeignKey(Genre, on_delete=models.PROTECT, verbose_name='Жанр')
     year = models.IntegerField(verbose_name='Год издания')
-    rating = models.IntegerField(default=0, verbose_name='Рейтинг')
+    rating = models.IntegerField(default=0,  verbose_name='Рейтинг')
     annotation = models.TextField(null=True, verbose_name='Описание')
 
     def get_author(self):
