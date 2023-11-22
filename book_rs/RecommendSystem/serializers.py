@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book
+from .models import Book, Genre, Author, Comment
 
 
 # Основной задачей Serializer является представление
@@ -17,5 +17,28 @@ class BooksSerializer(serializers.ModelSerializer):
             'rating',
             'annotation')
         
-    
-    
+
+class GenresSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ('pk', 'genre_name')
+
+
+class AuthorsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ('pk',
+                  'lastname',
+                  'firstname',
+                  'patronymic',
+                  'description')
+
+
+class CommentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('pk',
+                  'author',
+                  'book',
+                  'text',
+                  'created_at')

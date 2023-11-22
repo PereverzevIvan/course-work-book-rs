@@ -13,6 +13,9 @@ from . import views, api_views
 
 router = routers.DefaultRouter()
 router.register(r'books', api_views.BooksViewSet)
+router.register(r'genres', api_views.GenresViewSet)
+router.register(r'authors', api_views.AuthorsViewSet)
+router.register(r'comments', api_views.CommentsViewSet)
 
 app_name = 'RS'
 urlpatterns = [
