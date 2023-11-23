@@ -5,6 +5,8 @@ from .models import Book, Genre, Author, Comment
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import BooksSerializer, GenresSerializer, AuthorsSerializer, CommentsSerializer, UserSerializer
 from django.contrib.auth.models import User
+from .admin import BookResource
+from django.http import HttpResponse
 
 
 # Класс ModelViewSet позволяет определить сразу весь набор функций 
@@ -58,3 +60,11 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+def export_from_admin(request):
+    book_resource = BookResource()
+    data_set = book_resource.export()
+    response = HttpResponse(data_set.json, content_type='application/json')
+
+    return response

@@ -38,7 +38,8 @@ urlpatterns = [
     path('books_of_author/<int:author_id>/<int:page_no>', views.show_author_books, name='books_of_author'),
     path('like/<int:book_id>/', views.add_like, name='like'),
     path('dislike/<int:book_id>/', views.add_dislike, name='dislike'),
-    path('api/v1/', include(router.urls ))
+    path('api/v1/', include(router.urls)),
+    path('api/v1/export', api_views.export_from_admin, name='export_from_admin')
 ]
 
 handler404 = 'RecommendSystem.views.error_404'

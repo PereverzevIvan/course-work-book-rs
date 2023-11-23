@@ -44,8 +44,8 @@ class DislikeInlines(admin.TabularInline):
 # Классы ресурсов для экспорта из админки
 class BookResource(export_resources.ModelResource):
     book_name = export_fields.Field(attribute='book_name', column_name='Название')
-    author  = export_fields.Field(attribute='author', column_name='Автор')
-    genre = export_fields.Field(attribute='genre', column_name='Жанр')
+    author  = export_fields.Field(attribute='author_id', column_name='Автор')
+    genre = export_fields.Field(attribute='genre_id', column_name='Жанр')
     year = export_fields.Field(attribute='year', column_name='Год издания')
     rating = export_fields.Field(attribute='rating', column_name='Рейтинг')
     annotation = export_fields.Field(attribute='annotation', column_name='Аннотация')
@@ -58,6 +58,15 @@ class BookResource(export_resources.ModelResource):
     def dehydrate_author(self, book):
         author = Author.objects.get(pk=book.author_id)
         return author.__str__()
+    
+    def dehydrate_genre(self, book):
+        genre = Genre.objects.get(pk=book.genre_id)
+        return genre.__str__()
+
+    def get_queryset(self):
+        query = Book.objects.filter(year__gte=2000)
+        return query
+
     
 
 
