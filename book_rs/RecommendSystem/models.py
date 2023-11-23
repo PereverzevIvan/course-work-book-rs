@@ -2,9 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
 from os import sep
-from django.utils.safestring import mark_safe
 from simple_history.models import HistoricalRecords
-from import_export.admin import ImportExportModelAdmin
+
 
 
 # Классы моделей для базы данных
@@ -132,103 +131,3 @@ class Dislike(models.Model):
     class Meta:
         verbose_name = "Дизлайк"
         verbose_name_plural = "Дизлайки"
-
-
-# Классы для корректного отображения моделей в админке
-class BookInlines(admin.TabularInline):
-    model = Book
-
-    fields = ['book_name', 'image', 'genre', 'year', 'annotation']
-
-
-class FavoriteInlines(admin.TabularInline):
-    model = Favorite
-
-    fields = ['user']
-    readonly_fields = ['user']
-
-
-class BlackListInlines(admin.TabularInline):
-    model = BlackList
-
-    fields = ['user']
-    readonly_fields = ['user']
-
-
-class LikeInlines(admin.TabularInline):
-    model = Like
-
-    fields = ['book']
-    readonly_fields = ['book']
-
-
-class DislikeInlines(admin.TabularInline):
-    model = Dislike
-
-    fields = ['book']
-    readonly_fields = ['book']
-
-
-class GenreAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('id', 'genre_name')
-    list_display_links = ('id', 'genre_name')
-    search_fields = ['genre_name']
-
-class AuthorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('id', 'get_fio', 'get_photo')
-    list_display_links = ('id', 'get_fio')
-    search_fields = ['firstname', 'lastname', 'patronymic']
-
-    inlines = [BookInlines]
-
-    def get_fio(self, object):
-        return f'{object.firstname} {object.lastname} {object.patronymic}'
-
-    def get_photo(self, object):
-        return mark_safe(f'<img src="/static/{object.image}" width=70>')
-    
-    get_photo.short_description = 'Фотография'
-    get_fio.short_description = 'ФИО'
-
-class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('id', 'book_name', 'author', 'genre', 'year', 'get_photo')
-    list_display_links = ('id', 'book_name')
-    list_filter = ('genre', 'year')
-    readonly_fields = ['rating']
-    search_fields = ['book_name', 'author__firstname', 'author__lastname', 'author__patronymic']
-    raw_id_fields = ['author']
-
-    inlines = [FavoriteInlines]
-
-    def get_photo(self, object):
-        return mark_safe(f'<img src="/static/{object.image}" width=70>')
-    
-    get_photo.short_description = 'Обложка'
-
-class CommentAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('id', 'author', 'book', 'created_at')
-    fields = ['author', 'book', 'text', 'created_at']
-    readonly_fields = ['author', 'book', 'created_at']
-    list_filter = ['created_at']
-    search_fields = ['text']
-    date_hierarchy = "created_at"
-
-class FavoritesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('id', 'user', 'book')
-    readonly_fields = ['user', 'book']
-    search_fields = ['user__username', 'book__book_name']
-
-class BlackListAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('id', 'user', 'book')
-    readonly_fields = ['user', 'book']
-    search_fields = ['user__username', 'book__book_name']
-
-class LikeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('id', 'user', 'book')
-    readonly_fields = ['user', 'book']
-    search_fields = ['user__username', 'book__book_name']
-
-class DislikeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('id', 'user', 'book')
-    readonly_fields = ['user', 'book']
-    search_fields = ['user__username', 'book__book_name']

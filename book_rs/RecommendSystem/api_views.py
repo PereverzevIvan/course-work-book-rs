@@ -1,9 +1,10 @@
-from rest_framework import generics, viewsets, filters
+from rest_framework import viewsets, filters, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import Book, Genre, Author, Comment
 from django_filters.rest_framework import DjangoFilterBackend
-from .serializers import BooksSerializer, GenresSerializer, AuthorsSerializer, CommentsSerializer
+from .serializers import BooksSerializer, GenresSerializer, AuthorsSerializer, CommentsSerializer, UserSerializer
+from django.contrib.auth.models import User
 
 
 # Класс ModelViewSet позволяет определить сразу весь набор функций 
@@ -48,3 +49,12 @@ class CommentsViewSet(viewsets.ModelViewSet):
     ''' Представление для работы с моделью комментариев к книгам '''
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]

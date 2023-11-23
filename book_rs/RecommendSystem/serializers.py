@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Book, Genre, Author, Comment
+from django.contrib.auth.models import User
 
 
 # Основной задачей Serializer является представление
@@ -42,3 +43,9 @@ class CommentsSerializer(serializers.ModelSerializer):
                   'book',
                   'text',
                   'created_at')
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username', 'email', 'groups']
