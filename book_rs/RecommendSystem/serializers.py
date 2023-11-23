@@ -8,6 +8,8 @@ from rest_framework.validators import UniqueTogetherValidator
 # данных, имеющихся в БД, в понятном браузеру формате -
 # в формате файла JSON  
 class BooksSerializer(serializers.ModelSerializer):
+    author = serializers.SerializerMethodField()
+    
     class Meta:
         model = Book
         fields = (
@@ -17,6 +19,12 @@ class BooksSerializer(serializers.ModelSerializer):
             'genre',
             'year',
             'annotation')
+        
+    def get_author(self, book):
+        return book.author.firstname
+
+    
+
         
 
 class GenresSerializer(serializers.ModelSerializer):

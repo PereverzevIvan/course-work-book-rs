@@ -24,7 +24,7 @@ from django.db.models import Q
 
 class BooksViewSet(viewsets.ModelViewSet):
     ''' Представление для работы с моделью книг '''
-    queryset = Book.objects.all()
+    queryset = Book.objects.select_related('author')
     serializer_class = BooksSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['genre', 'year', 'author']
