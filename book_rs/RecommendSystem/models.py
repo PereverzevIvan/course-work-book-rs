@@ -3,11 +3,13 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from os import sep
 from django.utils.safestring import mark_safe
+from simple_history.models import HistoricalRecords
 
 
 # Классы моделей для базы данных
 class Genre(models.Model):
     genre_name = models.CharField(max_length=200, verbose_name="Название")
+    history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.genre_name}'
@@ -23,6 +25,7 @@ class Author(models.Model):
     patronymic = models.CharField(max_length=200, verbose_name='Отчество')
     image = models.ImageField(upload_to=f'images/authors/', default='images/authors/default.png', verbose_name='Фотография')
     description =  models.TextField(null=True, verbose_name='Описание')
+    history = HistoricalRecords()
 
     def __str__(self):
         return f'{self.lastname} {self.firstname} {self.patronymic}'
@@ -41,6 +44,7 @@ class Book(models.Model):
     year = models.IntegerField(verbose_name='Год издания')
     rating = models.IntegerField(default=0,  verbose_name='Рейтинг')
     annotation = models.TextField(null=True, verbose_name='Описание')
+    history = HistoricalRecords()
 
     def get_author(self):
         author = Author.objects.get(pk=self.author.pk)
