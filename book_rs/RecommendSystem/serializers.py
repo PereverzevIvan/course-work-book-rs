@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import Book, Genre, Author, Comment
+from .models import Book, Genre, Author, Comment, Favorite
 from django.contrib.auth.models import User
+from rest_framework.validators import UniqueTogetherValidator
 
 
 # Основной задачей Serializer является представление
@@ -15,7 +16,6 @@ class BooksSerializer(serializers.ModelSerializer):
             'author',
             'genre',
             'year',
-            'rating',
             'annotation')
         
 
@@ -23,6 +23,9 @@ class GenresSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = ('pk', 'genre_name')
+        validators = [
+            UniqueTogetherValidator(queryset=Genre.objects.all(), fields=['genre_name'])
+        ]
 
 
 class AuthorsSerializer(serializers.ModelSerializer):
@@ -45,7 +48,9 @@ class CommentsSerializer(serializers.ModelSerializer):
                   'created_at')
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class FavoritesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'groups']
+        model = Favorite
+        fields = ('pk',
+                  'user',
+                  'book')

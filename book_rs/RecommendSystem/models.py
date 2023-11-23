@@ -75,6 +75,7 @@ class Comment(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, verbose_name='Книга')
     text = models.TextField(verbose_name='Содержание')
     created_at = models.DateField(null=True, auto_now_add=True, verbose_name='Дата написания')
+    is_hide = models.BooleanField(default=False, verbose_name='Скрыт')
 
     def __str__(self):
         return f'Комментарий пользователя ({self.author_id}) к книге ({self.book_id})'

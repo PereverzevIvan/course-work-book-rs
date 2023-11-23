@@ -66,10 +66,7 @@ class BookResource(export_resources.ModelResource):
     def get_queryset(self):
         query = Book.objects.filter(year__gte=2000)
         return query
-
     
-
-
 
 # Классы моделей-администраторов
 class GenreAdmin(admin.ModelAdmin):
@@ -110,8 +107,8 @@ class BookAdmin(ImportExportModelAdmin, ExportActionMixin, ExportMixin, admin.Mo
     get_photo.short_description = 'Обложка'
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'author', 'book', 'created_at')
-    fields = ['author', 'book', 'text', 'created_at']
+    list_display = ('id', 'author', 'book', 'created_at', 'is_hide')
+    fields = ['author', 'book', 'text', 'created_at', 'is_hide']
     readonly_fields = ['author', 'book', 'created_at']
     list_filter = ['created_at']
     search_fields = ['text']
