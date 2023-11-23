@@ -4,6 +4,7 @@ from django.contrib import admin
 from os import sep
 from django.utils.safestring import mark_safe
 from simple_history.models import HistoricalRecords
+from import_export.admin import ImportExportModelAdmin
 
 
 # Классы моделей для базы данных
@@ -168,12 +169,12 @@ class DislikeInlines(admin.TabularInline):
     readonly_fields = ['book']
 
 
-class GenreAdmin(admin.ModelAdmin):
+class GenreAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'genre_name')
     list_display_links = ('id', 'genre_name')
     search_fields = ['genre_name']
 
-class AuthorAdmin(admin.ModelAdmin):
+class AuthorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'get_fio', 'get_photo')
     list_display_links = ('id', 'get_fio')
     search_fields = ['firstname', 'lastname', 'patronymic']
@@ -189,7 +190,7 @@ class AuthorAdmin(admin.ModelAdmin):
     get_photo.short_description = 'Фотография'
     get_fio.short_description = 'ФИО'
 
-class BookAdmin(admin.ModelAdmin):
+class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'book_name', 'author', 'genre', 'year', 'get_photo')
     list_display_links = ('id', 'book_name')
     list_filter = ('genre', 'year')
@@ -204,7 +205,7 @@ class BookAdmin(admin.ModelAdmin):
     
     get_photo.short_description = 'Обложка'
 
-class CommentAdmin(admin.ModelAdmin):
+class CommentAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'author', 'book', 'created_at')
     fields = ['author', 'book', 'text', 'created_at']
     readonly_fields = ['author', 'book', 'created_at']
@@ -212,22 +213,22 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ['text']
     date_hierarchy = "created_at"
 
-class FavoritesAdmin(admin.ModelAdmin):
+class FavoritesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'user', 'book')
     readonly_fields = ['user', 'book']
     search_fields = ['user__username', 'book__book_name']
 
-class BlackListAdmin(admin.ModelAdmin):
+class BlackListAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'user', 'book')
     readonly_fields = ['user', 'book']
     search_fields = ['user__username', 'book__book_name']
 
-class LikeAdmin(admin.ModelAdmin):
+class LikeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'user', 'book')
     readonly_fields = ['user', 'book']
     search_fields = ['user__username', 'book__book_name']
 
-class DislikeAdmin(admin.ModelAdmin):
+class DislikeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'user', 'book')
     readonly_fields = ['user', 'book']
     search_fields = ['user__username', 'book__book_name']
