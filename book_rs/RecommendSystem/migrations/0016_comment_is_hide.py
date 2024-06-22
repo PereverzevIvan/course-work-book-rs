@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('RecommendSystem', '0015_alter_author_options_alter_blacklist_options_and_more'),
+        (
+            "RecommendSystem",
+            "0015_alter_author_options_alter_blacklist_options_and_more",
+        ),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='comment',
-            name='is_hide',
-            field=models.BooleanField(default=False, verbose_name='Скрыт'),
+            model_name="comment",
+            name="is_hide",
+            field=models.BooleanField(default=False, verbose_name="Скрыт"),
         ),
     ]

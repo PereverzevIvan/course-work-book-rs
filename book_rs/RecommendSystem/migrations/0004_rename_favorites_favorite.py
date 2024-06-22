@@ -8,12 +8,12 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('RecommendSystem', '0003_rename_book_id_blacklist_book_and_more'),
+        ("RecommendSystem", "0003_rename_book_id_blacklist_book_and_more"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Favorites',
-            new_name='Favorite',
+            old_name="Favorites",
+            new_name="Favorite",
         ),
     ]

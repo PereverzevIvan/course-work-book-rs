@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('RecommendSystem', '0001_initial'),
+        ("RecommendSystem", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='book',
-            name='rating',
+            model_name="book",
+            name="rating",
             field=models.IntegerField(default=0),
         ),
         migrations.AlterField(
-            model_name='comment',
-            name='created_at',
+            model_name="comment",
+            name="created_at",
             field=models.DateField(auto_now_add=True, null=True),
         ),
         migrations.AlterField(
-            model_name='comment',
-            name='rating',
+            model_name="comment",
+            name="rating",
             field=models.IntegerField(default=0),
         ),
     ]
