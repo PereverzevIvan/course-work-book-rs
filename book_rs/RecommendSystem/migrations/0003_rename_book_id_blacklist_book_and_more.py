@@ -6,43 +6,43 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('RecommendSystem', '0002_alter_book_rating_alter_comment_created_at_and_more'),
+        ("RecommendSystem", "0002_alter_book_rating_alter_comment_created_at_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='blacklist',
-            old_name='book_id',
-            new_name='book',
+            model_name="blacklist",
+            old_name="book_id",
+            new_name="book",
         ),
         migrations.RenameField(
-            model_name='blacklist',
-            old_name='user_id',
-            new_name='user',
+            model_name="blacklist",
+            old_name="user_id",
+            new_name="user",
         ),
         migrations.RenameField(
-            model_name='book',
-            old_name='author_id',
-            new_name='author',
+            model_name="book",
+            old_name="author_id",
+            new_name="author",
         ),
         migrations.RenameField(
-            model_name='comment',
-            old_name='author_id',
-            new_name='author',
+            model_name="comment",
+            old_name="author_id",
+            new_name="author",
         ),
         migrations.RenameField(
-            model_name='comment',
-            old_name='book_id',
-            new_name='book',
+            model_name="comment",
+            old_name="book_id",
+            new_name="book",
         ),
         migrations.RenameField(
-            model_name='favorites',
-            old_name='book_id',
-            new_name='book',
+            model_name="favorites",
+            old_name="book_id",
+            new_name="book",
         ),
         migrations.RenameField(
-            model_name='favorites',
-            old_name='user_id',
-            new_name='user',
+            model_name="favorites",
+            old_name="user_id",
+            new_name="user",
         ),
     ]

@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('RecommendSystem', '0009_alter_book_image'),
+        ("RecommendSystem", "0009_alter_book_image"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='book',
-            name='image',
-            field=models.ImageField(default='images/book_faces/default.png', upload_to='images/book_faces/'),
+            model_name="book",
+            name="image",
+            field=models.ImageField(
+                default="images/book_faces/default.png", upload_to="images/book_faces/"
+            ),
         ),
     ]

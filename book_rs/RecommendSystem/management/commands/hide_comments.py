@@ -22,4 +22,5 @@ class Command(BaseCommand):
                 self.style.SUCCESS('Successfully hide comment "%s"' % comment_id)
             )
 
+
 Book.objects.setect_reload

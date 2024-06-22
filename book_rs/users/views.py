@@ -5,28 +5,28 @@ from django.views import View
 from django.shortcuts import HttpResponse, HttpResponsePermanentRedirect
 from django.urls import reverse
 
+
 # Create your views here.
 class RegisterView(View):
-    ''' Класс для регистрации новых пользователей '''
-    template_name = 'registration/register.html'
+    """Класс для регистрации новых пользователей"""
+
+    template_name = "registration/register.html"
 
     def get(self, request):
-        context = {
-            'form': UserCreationForm()
-        }
+        context = {"form": UserCreationForm()}
 
         return render(request, self.template_name, context)
-    
+
     def post(self, request):
         form = UserCreationForm(request.POST)
 
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password1")
+
             user = authenticate(username=username, password=password)
             login(request, user)
-            return HttpResponsePermanentRedirect(reverse('RS:index'))
+            return HttpResponsePermanentRedirect(reverse("RS:index"))
         else:
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {"form": form})
