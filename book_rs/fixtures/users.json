@@ -1,0 +1,92 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$dZ0fAjCwJ92ZjqHrWp2Uq9$iaBIHCV5d/z6s4i+OLcGg4nkrBMj6ITv6WbI0dDetbw=",
+    "last_login": "2023-11-22T15:34:21.431Z",
+    "is_superuser": true,
+    "username": "IvanPer",
+    "first_name": "",
+    "last_name": "",
+    "email": "peregh320@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2023-06-20T10:58:30.047Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$th3HMsuzmdFm2uBO6dHbvN$VQfhbVcaUkzVGbNWDzq9bIoKiyG2iFQ28aZTL+NKMg4=",
+    "last_login": "2023-06-27T13:20:25.566Z",
+    "is_superuser": false,
+    "username": "Ira",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-06-25T08:49:57.310Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$aopbpXZKADmdAUG06rXX31$RCVpKZFrra6UG4bbz0vEuEdMGYgUA2+pliyqchCNRZQ=",
+    "last_login": "2023-06-27T13:15:40.279Z",
+    "is_superuser": false,
+    "username": "Pokemon",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-06-26T13:03:12.371Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$ZV902hZV6cFBX68KnFt25R$N+EQLGluJnz/Gieah6f5CZnRHTJR10Zv93erVDQtovA=",
+    "last_login": "2023-11-21T18:56:42.210Z",
+    "is_superuser": true,
+    "username": "IvanPer2",
+    "first_name": "",
+    "last_name": "",
+    "email": "i.d.pereverzev@mail.ru",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2023-11-21T18:55:09.335Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 12,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$VXcuvNEAKz2tgGRW3xYMlk$qO6STGoHa0uNPY84HQlGbbA1R+hneiBckrDT1O6ShfU=",
+    "last_login": "2024-06-22T21:19:48.366Z",
+    "is_superuser": true,
+    "username": "NewAdmin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-06-22T21:19:30.909Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
