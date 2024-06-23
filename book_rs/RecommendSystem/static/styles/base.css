@@ -3,7 +3,9 @@
 }
 
 /* General */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -13,6 +15,7 @@ a {
     color: black;
     text-decoration: none;
 }
+
 a:hover {
     color: dodgerblue;
     text-decoration: underline;
@@ -50,29 +53,34 @@ body {
 .header {
     background-color: black;
 }
+
 .header__container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 50px;
 }
+
 .header__logo {
     color: white;
     font-size: 1.5rem;
     text-decoration: none;
     font-weight: bold;
 }
+
 .header__nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
 }
+
 .header__user-info {
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 5px;
     padding: 2px 5px;
 }
+
 .header__user-info a:hover {
     background-color: transparent;
 }
@@ -84,6 +92,7 @@ body {
     align-items: center;
     gap: 10px;
 }
+
 .menu__link {
     display: inline-block;
     color: white;
@@ -91,12 +100,23 @@ body {
 }
 
 /* Header and nav-menu animations */
-.header__logo, .menu__link {
+.header__logo,
+.menu__link {
     padding: 5px;
     border-radius: 5px;
     transition: all 0.2s;
+    font-size: 15px;
 }
-.header__logo:hover, .menu__link:hover {
+
+button.menu__link {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+.header__logo:hover,
+.menu__link:hover {
     color: yellow;
     background-color: rgba(255, 255, 255, 0.3);
     transform: scale(1.05)
@@ -106,9 +126,11 @@ body {
 .common-text {
     font-size: 1.067rem;
 }
+
 .common-text--size_big {
     font-size: 1.67rem;
 }
+
 .common-text--size_small {
     font-size: 0.9rem;
 }
@@ -126,6 +148,7 @@ body {
     display: inline-block;
     width: fit-content;
 }
+
 .btn:hover {
     transform: scale(1.03);
     color: yellow;
@@ -143,7 +166,8 @@ body {
     margin: 30px auto 0;
 }
 
-input, textarea {
+input,
+textarea {
     font-size: 1.1rem;
     padding: 5px;
     border-radius: 5px;
@@ -156,6 +180,7 @@ input, textarea {
     background-color: black;
     color: white;
 }
+
 .footer__container {
     display: flex;
     align-items: center;

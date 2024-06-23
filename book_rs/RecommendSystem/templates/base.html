@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'styles/base.css' %}">
     {% block additional_styles %}{% endblock additional_styles %}
 </head>
+
 <body>
     <header class="header">
         <div class="container header__container">
@@ -38,16 +40,19 @@
                 </ul>
                 <ul class="menu header__user-info">
                     {% if not user.is_authenticated %}
-                        <li class="menu__item">
-                            <a class="menu__link" href="{% url 'users:register' %}">Регистрация</a>
-                        </li>
-                        <li class="menu__item">
-                            <a class="menu__link" href="{% url 'users:login' %}">Вход</a>
-                        </li>
+                    <li class="menu__item">
+                        <a class="menu__link" href="{% url 'users:register' %}">Регистрация</a>
+                    </li>
+                    <li class="menu__item">
+                        <a class="menu__link" href="{% url 'users:login' %}">Вход</a>
+                    </li>
                     {% else %}
-                        <li class="menu__item">
-                            <a class="menu__link" href="{% url 'users:logout' %}">{{ user }}</a>
-                        </li>
+                    <li class="menu__item">
+                        <form method="post" action="{% url 'users:logout' %}">
+                            {% csrf_token %}
+                            <button class="menu__link" type="submit">{{ user }}</button>
+                        </form>
+                    </li>
                     {% endif %}
                 </ul>
             </nav>
@@ -62,4 +67,5 @@
         </div>
     </footer>
 </body>
+
 </html>
