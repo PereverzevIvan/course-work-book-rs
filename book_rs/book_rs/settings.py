@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "import_export",
     "simple_history",
     'drf_yasg',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +75,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'social_django.context_processors.backends', 
             ],
         },
     },
@@ -146,7 +148,9 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 3,
     # Настройка вильтров
-    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
 }
 
 # CORS_ALLOWED_ORIGINS = [
@@ -174,3 +178,12 @@ CORS_ALLOW_HEADERS = (
     "x-csrftoken",
     "x-requested-with",
 )
+
+AUTHENTICATION_BACKENDS = (
+'social_core.backends.vk.VKOAuth2',
+'django.contrib.auth.backends.ModelBackend',)
+
+# OAUTH2
+SOCIAL_AUTH_VK_OAUTH2_KEY = 'PqavUsjX3iryRah2jLxH'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'a356b651a356b651a356b651a9a04e784caa356a356b651c52e47417ff00e2f091ae446'
+

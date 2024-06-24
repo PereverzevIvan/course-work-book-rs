@@ -41,4 +41,5 @@ urlpatterns = [
     path("users/", include("users.urls")),
     path("admin/", admin.site.urls),
     path('swagger/', SchemaView.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('', include('social_django.urls')),
 ]
